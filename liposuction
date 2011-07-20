@@ -4,7 +4,7 @@ import os
 import optparse
 
 from lipolib.hdlist import HdlistParser
-from smart.backends.rpm.rpmver import vercmp
+from lipolib.rpmver import vercmp
 
 DESCRIPTION = """\
 %prog tries lists packages that are obsolete in a given repository

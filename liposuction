@@ -52,8 +52,7 @@ def parse_options(args):
 def main(args):
     opts, paths = parse_options(args)
     for path in paths:
-        clean_media(path, lipodir=opts.lipodir, synthesis=opts.synthesis,
-                dryrun=opts.dryrun)
+        clean_media(path, synthesis=opts.synthesis)
 
 if __name__ == "__main__":
     main(sys.argv[1:])

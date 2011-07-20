@@ -12,7 +12,6 @@ DESCRIPTION = """\
 ("obsolete" means that there are newer versions in the same repository.)
 """
 USAGE = "%prog [options] <media-dir> ..."
-LIPODIR = "./old"
 SYNTHESIS_PATH = "media_info/synthesis.hdlist.cz"
 
 def get_packages(synpath):
@@ -25,7 +24,7 @@ def get_packages(synpath):
         packages.setdefault(pkg.name, []).append(pkg)
     return packages
 
-def clean_media(mediadir, synthesis=None):
+def inspect_media(mediadir, synthesis=None):
     synpath = os.path.join(mediadir, synthesis)
     packages = get_packages(synpath)
     mustfix = []
@@ -52,7 +51,7 @@ def parse_options(args):
 def main(args):
     opts, paths = parse_options(args)
     for path in paths:
-        clean_media(path, synthesis=opts.synthesis)
+        inspect_media(path, synthesis=opts.synthesis)
 
 if __name__ == "__main__":
     main(sys.argv[1:])

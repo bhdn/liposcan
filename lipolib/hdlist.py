@@ -96,9 +96,12 @@ class HdlistParser:
         namever = verinfo[0]
         pkg = Package()
         if len(verinfo) > 5:
-            lefthand, righthand = namever.rsplit("-", 1)
-            namever = lefthand
-            archinfo = righthand
+            if namever.endswith(".src"):
+                # source packages don't have the %disttag%distepoch suffix
+                archinfo = namever
+                namever = namever[:-len(".src")]
+            else:
+                namever, archinfo = namever.rsplit("-", 1)
             pkg.disttag = verinfo[4]
             pkg.distepoch = verinfo[5]
         else:

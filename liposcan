@@ -32,8 +32,7 @@ def inspect_media(mediadir, synthesis=None):
         if len(related) > 1:
             versions = [(pkg.fullversion, pkg) for pkg in related]
             versions.sort(cmp=vercmp, reverse=True, key=lambda x: x[0])
-            olderpkgs = [pkg for fv, pkg in versions[1:]]
-            mustfix.extend(olderpkgs)
+            mustfix.extend(pkg for fv, pkg in versions[1:])
     for pkg in mustfix:
         path = os.path.join(mediadir, pkg.fullname + ".rpm")
         print path

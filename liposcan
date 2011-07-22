@@ -27,13 +27,13 @@ def get_packages(synpath):
 def inspect_media(mediadir, synthesis=None):
     synpath = os.path.join(mediadir, synthesis)
     packages = get_packages(synpath)
-    mustfix = []
+    obsolete = []
     for name, related in packages.iteritems():
         if len(related) > 1:
             versions = [(pkg.fullversion, pkg) for pkg in related]
             versions.sort(cmp=vercmp, reverse=True, key=lambda x: x[0])
-            mustfix.extend(pkg for fv, pkg in versions[1:])
-    for pkg in mustfix:
+            obsolete.extend(pkg for fv, pkg in versions[1:])
+    for pkg in obsolete:
         path = os.path.join(mediadir, pkg.fullname + ".rpm")
         print path
 

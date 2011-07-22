@@ -7,7 +7,7 @@ from lipolib.hdlist import HdlistParser
 from lipolib.rpmver import vercmp
 
 DESCRIPTION = """\
-%prog tries lists packages that are obsolete in a given repository
+%prog lists packages that are obsolete in a given repository
 
 ("obsolete" means that there are newer versions in the same repository.)
 """

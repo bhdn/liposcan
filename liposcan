@@ -35,7 +35,7 @@ def inspect_media(mediadir, synthesis=None):
             obsolete.extend(pkg for fv, pkg in versions[1:])
     for pkg in obsolete:
         path = os.path.join(mediadir, pkg.fullname + ".rpm")
-        print path
+        yield path
 
 def parse_options(args):
     parser = optparse.OptionParser(usage=USAGE, description=DESCRIPTION)
@@ -43,14 +43,31 @@ def parse_options(args):
         default=SYNTHESIS_PATH,
         help="path to the synthesis file for the media "\
              "(can be relative)")
+    parser.add_option("-m", "--moveto", type="string", default=None,
+        metavar="DIR",
+        help="move obsolete package files to DIR")
+    parser.add_option("-f", "--force", default=False, action="store_true",
+        help="overwrite existing files (when using -m DIR)")
     if not args:
         parser.print_help()
     return parser.parse_args(args)
 
 def main(args):
-    opts, paths = parse_options(args)
-    for path in paths:
-        inspect_media(path, synthesis=opts.synthesis)
+    opts, repodirs = parse_options(args)
+    for repo in repodirs:
+        for pkgpath in inspect_media(repo, synthesis=opts.synthesis):
+            if not os.path.exists(pkgpath):
+                sys.stderr.write("missing file: %s\n" % (pkgpath))
+            else:
+                print pkgpath
+            if opts.moveto:
+                name = os.path.basename(pkgpath)
+                newpath = os.path.join(opts.moveto, name)
+                if os.path.exists(newpath) and not opts.force:
+                    sys.stderr.write("not moving, already exists: %s\n" %
+                            (newpath))
+                else:
+                    os.rename(pkgpath, newpath)
 
 if __name__ == "__main__":
     main(sys.argv[1:])
